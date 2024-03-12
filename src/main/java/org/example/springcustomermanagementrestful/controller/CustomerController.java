@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@CrossOrigin("*")
 @RequestMapping("/api/customers")
 public class CustomerController {
     @Autowired
@@ -46,11 +47,12 @@ public class CustomerController {
         if (!customerOptional.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        customer.setId(customerOptional.get().getId());
         return new ResponseEntity<>(customerService.save(customer), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Customer> deleteCustomer(@PathVariable Long id, @RequestBody Customer customer){
+    public ResponseEntity<Customer> deleteCustomer(@PathVariable Long id){
         Optional<Customer> customerOptional = customerService.findById(id);
         if (!customerOptional.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
